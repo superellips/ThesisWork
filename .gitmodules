@@ -1,3 +1,6 @@
 [submodule "GuestbookService"]
 	path = GuestbookService
 	url = ../GuestbookService/
+[submodule "UserService"]
+	path = UserService
+	url = https://github.com/superellips/UserService
