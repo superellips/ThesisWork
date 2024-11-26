@@ -7,3 +7,6 @@
 [submodule "AclService"]
 	path = AclService
 	url = https://github.com/superellips/AclService
+[submodule "ApiGateway"]
+	path = ApiGateway
+	url = https://github.com/superellips/ApiGateway.git

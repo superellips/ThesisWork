@@ -1,0 +1,65 @@
+services:
+  aclservice:
+    container_name: aclservice
+    image: stjarnstoft/aclservice:prod
+    build:
+      context: ./AclService
+      dockerfile: Dockerfile
+      target: prod
+    environment:
+      GB_CONSTRING: "mongodb://acldb"
+    ports:
+      - "8093:8080"
+  acldb:
+    container_name: acldb
+    image: mongo
+    volumes:
+      - acldbdata:/data/db
+  guestbookservice:
+    container_name: guestbookservice
+    image: stjarnstoft/guestbookserviece:prod
+    build:
+      context: ./GuestbookService
+      dockerfile: Dockerfile
+      target: prod
+    environment:
+      GB_CONSTRING: "mongodb://guestbookdb"
+    ports:
+      - "8092:8080"
+  guestbookdb:
+    container_name: guestbookdb
+    image: mongo
+    volumes:
+      - guestbookdbdata:/data/db
+  userservice:
+    container_name: userservice
+    image: stjarnstoft/userservice:prod
+    build:
+      context: ./UserService
+      dockerfile: Dockerfile
+      target: prod
+    environment:
+      GB_CONSTRING: "mongodb://userdb"
+    ports:
+      - "8091:8080"
+  userdb:
+    container_name: userdb
+    image: mongo
+    volumes:
+      - userdbdata:/data/db
+  apigateway:
+    container_name: apigateway
+    image: stjarnstoft/apigateway:dev
+    build:
+      context: ./ApiGateway
+      dockerfile: Dockerfile
+      target: dev
+    ports:
+      - "8080:8080"
+      - "2345:2345"
+    volumes:
+      - ./ApiGateway/:/app
+volumes:
+  acldbdata:
+  guestbookdbdata:
+  userdbdata:
