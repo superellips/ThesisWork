@@ -33,15 +33,17 @@ services:
       - guestbookdbdata:/data/db
   userservice:
     container_name: userservice
-    image: stjarnstoft/userservice:prod
+    image: stjarnstoft/userservice:dev
     build:
       context: ./UserService
       dockerfile: Dockerfile
-      target: prod
+      target: dev
     environment:
       GB_CONSTRING: "mongodb://userdb"
     ports:
       - "8091:8080"
+    volumes:
+      - ./UserService/:/app
   userdb:
     container_name: userdb
     image: mongo
@@ -54,11 +56,27 @@ services:
       context: ./ApiGateway
       dockerfile: Dockerfile
       target: dev
+    environment:
+      GUESTBOOK_ROOT_DOMAIN: "localhost:8080"
     ports:
       - "8080:8080"
       - "2345:2345"
     volumes:
       - ./ApiGateway/:/app
+  frontend:
+    container_name: frontend
+    image: stjarstoft/frontend:dev
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+      target: dev
+    environment:
+      GUESTBOOK_ROOT_DOMAIN: "localhost:8888"
+    ports:
+      - "8888:8080"
+      - "2346:2345"
+    volumes:
+      - ./Frontend/:/app
 volumes:
   acldbdata:
   guestbookdbdata:
