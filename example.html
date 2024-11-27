@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Board</title>
+    
+</head>
+<body>
+    <h1>Message Board</h1>
+    <ul id="messageList"></ul>
+    
+    <h2>Send a Message</h2>
+    <form id="messageForm">
+        <label for="senderName">Name:</label>
+        <input type="text" id="senderName" name="senderName" required>
+        <br>
+        <label for="senderEmail">Email:</label>
+        <input type="email" id="senderEmail" name="senderEmail" required>
+        <br>
+        <label for="text">Message:</label>
+        <textarea id="text" name="text" required></textarea>
+        <br>
+        <button type="submit">Send</button>
+    </form>
+    <script>
+    // Base URL for the external API
+    const BASE_URL = 'http://localhost:8080/messages/6745b41a616fa2884b8eaeb0';
+    
+    // Function to fetch and display messages
+    async function fetchMessages() {
+        try {
+            const response = await fetch(BASE_URL);
+            if (!response.ok) {
+                throw new Error(`Error fetching messages: ${response.statusText}`);
+            }
+            const messages = await response.json();
+            const messageList = document.getElementById('messageList');
+            messageList.innerHTML = ''; // Clear the current list
+    
+            messages.forEach(message => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${message.senderName}: ${message.text}`;
+                messageList.appendChild(listItem);
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    
+    // Function to handle form submission
+    async function sendMessage(event) {
+        event.preventDefault(); // Prevent default form submission behavior
+    
+        const senderName = document.getElementById('senderName').value;
+        const senderEmail = document.getElementById('senderEmail').value;
+        const text = document.getElementById('text').value;
+    
+        const message = {
+            senderName,
+            senderEmail,
+            text
+        };
+    
+        try {
+            const response = await fetch(BASE_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(message)
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Error sending message: ${response.statusText}`);
+            }
+    
+            // Optionally fetch messages again to update the list
+            fetchMessages();
+            document.getElementById('messageForm').reset(); // Clear the form
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    
+    // Call fetchMessages when the page loads
+    document.addEventListener('DOMContentLoaded', fetchMessages);
+    
+    // Attach event listener to the form
+    document.getElementById('messageForm').addEventListener('submit', sendMessage);
+    
+        </script>
+</body>
+</html>
+

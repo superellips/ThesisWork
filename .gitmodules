@@ -10,3 +10,6 @@
 [submodule "ApiGateway"]
 	path = ApiGateway
 	url = https://github.com/superellips/ApiGateway.git
+[submodule "Frontend"]
+	path = Frontend
+	url = https://github.com/superellips/Frontend.git
