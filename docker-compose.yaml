@@ -1,15 +1,17 @@
 services:
   aclservice:
     container_name: aclservice
-    image: stjarnstoft/aclservice:prod
+    image: stjarnstoft/aclservice:dev
     build:
       context: ./AclService
       dockerfile: Dockerfile
-      target: prod
+      target: dev
     environment:
       GB_CONSTRING: "mongodb://acldb"
     ports:
       - "8093:8080"
+    volumes:
+      - ./AclService/:/app
   acldb:
     container_name: acldb
     image: mongo
@@ -17,15 +19,17 @@ services:
       - acldbdata:/data/db
   guestbookservice:
     container_name: guestbookservice
-    image: stjarnstoft/guestbookserviece:prod
+    image: stjarnstoft/guestbookserviece:dev
     build:
       context: ./GuestbookService
       dockerfile: Dockerfile
-      target: prod
+      target: dev
     environment:
       GB_CONSTRING: "mongodb://guestbookdb"
     ports:
       - "8092:8080"
+    volumes:
+      - ./GuestbookService/:/app
   guestbookdb:
     container_name: guestbookdb
     image: mongo
