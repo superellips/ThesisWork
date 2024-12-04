@@ -62,6 +62,9 @@ services:
       target: dev
     environment:
       GUESTBOOK_ROOT_DOMAIN: "localhost:8080"
+      GUESTBOOK_HOST: "guestbookservice:8080"
+      USER_HOST: "userservice:8080"
+      ACL_HOST: "aclservice:8080"
     ports:
       - "8080:8080"
       - "2345:2345"
@@ -76,6 +79,7 @@ services:
       target: dev
     environment:
       GUESTBOOK_ROOT_DOMAIN: "localhost:8888"
+      GATEWAY_HOST: "apigateway:8080"
     ports:
       - "8888:8080"
       - "2346:2345"
