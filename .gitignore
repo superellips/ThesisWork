@@ -1,3 +1,4 @@
+.vscode
 *.pdf
 *.png
 ghcr-auth-token.yaml
